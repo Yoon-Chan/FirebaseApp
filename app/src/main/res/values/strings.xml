@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">FirebaseApp</string>
+    <string name="Signup">회원가입</string>
+    <string name="SignIn">로그인</string>
+    <string name="SignOut">로그아웃</string>
 </resources>
