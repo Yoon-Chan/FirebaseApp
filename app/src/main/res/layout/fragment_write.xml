@@ -77,6 +77,8 @@
         app:layout_constraintEnd_toEndOf="@id/photoImageView"
         app:layout_constraintTop_toTopOf="@id/photoImageView"
         android:layout_margin="5dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
 
@@ -109,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:visibility="invisible"
+        tools:visibility="visible"
         >
 
         <ProgressBar
