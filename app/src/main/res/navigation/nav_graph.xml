@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/authFragment">
-
     <fragment
         android:id="@+id/authFragment"
         android:name="com.example.firebaseapp.AuthFragment"
         android:label="AuthFragment"
         tools:layout="@layout/fragment_auth"
         />
+
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.firebaseapp.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
+
+
         <action
             android:id="@+id/action_homeFragment_to_writeArticleFragment"
             app:destination="@id/writeArticleFragment"
@@ -23,7 +26,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+
     </fragment>
+
+
     <fragment
         android:id="@+id/writeArticleFragment"
         android:name="com.example.firebaseapp.ui.article.WriteArticleFragment"
@@ -45,4 +55,16 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.example.firebaseapp.ui.article.ArticleFragment"
+        android:label="글 상세 {articleId}"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+    </fragment>
+
+
+
 </navigation>

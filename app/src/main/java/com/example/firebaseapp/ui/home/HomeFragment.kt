@@ -5,9 +5,11 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.firebaseapp.R
 import com.example.firebaseapp.data.ArticleModel
 import com.example.firebaseapp.databinding.FragmentHomeBinding
+import com.example.firebaseapp.ui.article.WriteArticleFragmentDirections
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -21,17 +23,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding = FragmentHomeBinding.bind(view)
 
-        val db = Firebase.firestore
+        val articleAdapter = HomeArticleAdapter{
+            val articleId = it.articleId ?: ""
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToArticleFragment(articleId))
+        }
 
-        db.collection("articles").document("5DJdP0UlelFCoyQxRtus")
+       binding.homeRecyclerView.apply {
+           layoutManager = GridLayoutManager(context, 2)
+           adapter = articleAdapter
+       }
+
+        Firebase.firestore.collection("articles")
             .get()
             .addOnSuccessListener {result ->
-                val article =  result.toObject<ArticleModel>()
+                val list = result.map {
+                    it.toObject<ArticleModel>()
+                }
 
-                Log.e("homeFragment", article.toString())
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
+                articleAdapter.submitList(list)
             }
 
         setupWriteButton(view)
