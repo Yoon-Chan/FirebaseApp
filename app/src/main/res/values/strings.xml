@@ -5,4 +5,6 @@
     <string name="SignOut">로그아웃</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="upload">올리기</string>
+    <string name="photo_description_photo">사진에 대해 설명해 주세요</string>
 </resources>
