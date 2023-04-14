@@ -6,12 +6,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.HomeFragment">
 
+    <LinearLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:background="@color/gray_cc"
+            android:maxLines="1"
+            android:inputType="text"
+            android:hint="내일의 집 게시글 검색"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:drawablePadding="5dp"
+            android:layout_margin="10dp"
+            />
+
+        <ImageButton
+            android:id="@+id/bookmarkImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/baseline_bookmark_24"
+            android:backgroundTint="?attr/colorOnPrimary"
+            />
+
+
+    </LinearLayout>
+
+    <View
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/gray_cc"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+        android:layout_width="0dp"
+        android:layout_height="1dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"/>
 

@@ -27,6 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_main"
+        app:itemIconTint="@drawable/selector_menu_color"
+        app:itemTextColor="@drawable/selector_menu_color"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

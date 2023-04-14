@@ -18,20 +18,13 @@ import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding : FragmentHomeBinding
+    private lateinit var articleAdapter : HomeArticleAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentHomeBinding.bind(view)
 
-        val articleAdapter = HomeArticleAdapter{
-            val articleId = it.articleId ?: ""
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToArticleFragment(articleId))
-        }
-
-       binding.homeRecyclerView.apply {
-           layoutManager = GridLayoutManager(context, 2)
-           adapter = articleAdapter
-       }
+        setupRecyclerView()
 
         Firebase.firestore.collection("articles")
             .get()
@@ -44,6 +37,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         setupWriteButton(view)
+
+        setupBookmarkButton()
+    }
+
+    private fun setupRecyclerView(){
+        articleAdapter = HomeArticleAdapter {
+            val articleId = it.articleId ?: ""
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToArticleFragment(
+                    articleId
+                )
+            )
+        }
+
+        binding.homeRecyclerView.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = articleAdapter
+        }
+    }
+
+    private fun setupBookmarkButton() {
+        binding.bookmarkImageButton.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToBookMarkArticleFragment())
+        }
     }
 
     private fun setupWriteButton(view: View) {
