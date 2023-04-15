@@ -3,6 +3,8 @@ package com.example.firebaseapp.ui.bookmark
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.firebaseapp.R
 import com.example.firebaseapp.data.ArticleModel
@@ -15,15 +17,21 @@ import com.google.firebase.storage.ktx.storage
 
 class BookMarkArticleFragment : Fragment(R.layout.fragment_bookmark) {
 
-    private lateinit var binding : FragmentBookmarkBinding
-    private lateinit var bookmarkAdapter : BookmarkArticleAdapter
+    private lateinit var binding: FragmentBookmarkBinding
+    private lateinit var bookmarkAdapter: BookmarkArticleAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookmarkBinding.bind(view)
 
-        bookmarkAdapter = BookmarkArticleAdapter {
+        binding.toolbar.setupWithNavController(findNavController())
 
+        bookmarkAdapter = BookmarkArticleAdapter {
+            findNavController().navigate(
+                BookMarkArticleFragmentDirections.actionBookMarkArticleFragmentToArticleFragment(
+                    articleId = it.articleId.orEmpty()
+                )
+            )
         }
 
         binding.articleRecyclerView.apply {
@@ -38,14 +46,14 @@ class BookMarkArticleFragment : Fragment(R.layout.fragment_bookmark) {
             .addOnSuccessListener {
                 val list = it.get("articleIds") as List<*>
 
-                if(list.isNotEmpty()){
+                if (list.isNotEmpty()) {
                     Firebase.firestore.collection("articles")
                         .whereIn("articleId", list)
                         .get()
-                        .addOnSuccessListener {result ->
+                        .addOnSuccessListener { result ->
                             bookmarkAdapter.submitList(result.map { article -> article.toObject<ArticleModel>() })
                         }
-                        .addOnFailureListener { e->
+                        .addOnFailureListener { e ->
                             e.printStackTrace()
                         }
                 }

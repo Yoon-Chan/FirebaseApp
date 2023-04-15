@@ -13,6 +13,8 @@ import com.example.firebaseapp.R
 import com.example.firebaseapp.databinding.FragmentWriteBinding
 import    androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.example.firebaseapp.data.ArticleModel
 import com.google.android.material.snackbar.Snackbar
@@ -24,18 +26,14 @@ import java.util.UUID
 class WriteArticleFragment : Fragment(R.layout.fragment_write) {
 
     private lateinit var binding: FragmentWriteBinding
-
-    private var selectedUri: Uri? = null
+    private lateinit var viewModel : WriteArticleViewModel
 
     // Registers a photo picker activity launcher in single-select mode.
     private val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
         // Callback is invoked after the user selects a media item or closes the
         // photo picker.
         if (uri != null) {
-            selectedUri = uri
-            binding.photoImageView.setImageURI(uri)
-            binding.addButton.isVisible = false
-            binding.deleteButton.isVisible = true
+            viewModel.updateSelectedUri(uri)
         } else {
             Toast.makeText(context, "무슨 상태??", Toast.LENGTH_SHORT).show()
             //hideProgress()
@@ -46,10 +44,13 @@ class WriteArticleFragment : Fragment(R.layout.fragment_write) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentWriteBinding.bind(view)
-
+        setupViewModel()
 
         // Launch the photo picker and allow the user to choose only images.
-        startPicker()
+
+        if(viewModel.selectedUri.value == null){
+            startPicker()
+        }
         setupPhotoImageView()
         setupDeleteButton()
         setupSubmitButton(view)
@@ -59,22 +60,34 @@ class WriteArticleFragment : Fragment(R.layout.fragment_write) {
         setupBackButton()
     }
 
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(requireActivity()).get<WriteArticleViewModel>()
+
+        viewModel.selectedUri.observe(viewLifecycleOwner) {
+            binding.photoImageView.setImageURI(it)
+
+            if (it != null) {
+                binding.addButton.isVisible = false
+                binding.deleteButton.isVisible = true
+            } else {
+                binding.deleteButton.isVisible = false
+                binding.addButton.isVisible = true
+            }
 
 
+        }
+    }
 
 
     private fun setupDeleteButton() {
         binding.deleteButton.setOnClickListener {
-            binding.photoImageView.setImageURI(null)
-            selectedUri = null
-            binding.deleteButton.isVisible = false
-            binding.addButton.isVisible = true
+            viewModel.updateSelectedUri(null)
         }
     }
 
     private fun setupPhotoImageView() {
         binding.photoImageView.setOnClickListener {
-            if (selectedUri == null) {
+            if (viewModel.selectedUri.value == null) {
                 startPicker()
             }
         }
@@ -89,8 +102,8 @@ class WriteArticleFragment : Fragment(R.layout.fragment_write) {
     private fun setupSubmitButton(view: View) {
         binding.submitButton.setOnClickListener {
             showProgress()
-            if (selectedUri != null) {
-                val photoUrl = selectedUri ?: return@setOnClickListener
+            if (viewModel.selectedUri.value != null) {
+                val photoUrl = viewModel.selectedUri.value ?: return@setOnClickListener
                 //  업로드 과정 작성
                 uploadImage(photoUrl, successHandler = {
                     uploadArticle(it, binding.descriptionEditText.text.toString())

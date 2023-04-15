@@ -70,7 +70,11 @@
     <fragment
         android:id="@+id/bookMarkArticleFragment"
         android:name="com.example.firebaseapp.ui.bookmark.BookMarkArticleFragment"
-        android:label="BookMarkArticleFragment" />
+        android:label="BookMarkArticleFragment" >
+        <action
+            android:id="@+id/action_bookMarkArticleFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
 
 
 </navigation>

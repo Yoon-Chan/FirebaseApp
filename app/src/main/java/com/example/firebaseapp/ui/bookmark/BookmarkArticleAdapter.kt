@@ -3,12 +3,14 @@ package com.example.firebaseapp.ui.bookmark
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.firebaseapp.data.ArticleModel
 import com.example.firebaseapp.databinding.ItemArticleBinding
+import com.example.firebaseapp.ui.home.ArticleItem
 
 class BookmarkArticleAdapter(val onItemClicked : (ArticleModel) -> Unit) : ListAdapter<ArticleModel, BookmarkArticleAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding : ItemArticleBinding) : RecyclerView.ViewHolder(binding.root){
@@ -23,6 +25,8 @@ class BookmarkArticleAdapter(val onItemClicked : (ArticleModel) -> Unit) : ListA
             binding.root.setOnClickListener {
                 onItemClicked(articleModel)
             }
+
+            binding.bookmarkImageButton.isVisible = false
         }
     }
 

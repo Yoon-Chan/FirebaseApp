@@ -19,6 +19,18 @@
         android:scaleType="centerCrop"
         />
 
+
+    <ImageView
+        android:id="@+id/bookmarkImageButton"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnailImageView"
+        app:layout_constraintEnd_toEndOf="@id/thumbnailImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/baseline_bookmark_border_24"
+        android:layout_margin="5dp"
+        />
+
+
     <TextView
         android:id="@+id/descriptionTextView"
         app:layout_constraintStart_toStartOf="parent"
